@@ -1,0 +1,7 @@
+streamlit>=1.30,<2.0
+plotly>=5.18,<6.0
+pandas>=2.0,<3.0
+openpyxl>=3.1,<4.0
+streamlit-autorefresh>=1.0,<2.0
+httpx>=0.26,<1.0
+git+https://github.com/basic-bgnr/NepseUnofficialApi@2f09fbfdcbaf23545d5755b6f11b367324d5b8a4

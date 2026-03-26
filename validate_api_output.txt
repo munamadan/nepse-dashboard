@@ -1,0 +1,170 @@
+2026-03-26 11:27:36 | INFO | Day 1 API validation started
+2026-03-26 11:27:36 | INFO | Output will be saved to: /home/munamadan/Desktop/nepse-dashboard/validate_api_output.txt
+2026-03-26 11:27:36 | INFO | ============================================================
+2026-03-26 11:27:36 | INFO | Initialising Nepse() client...
+2026-03-26 11:27:38 | INFO | Nepse() ready. TLS verification disabled (expected — NEPSE cert chain issue).
+2026-03-26 11:27:38 | INFO | ============================================================
+2026-03-26 11:27:38 | INFO | Calling: getDailyScripPriceGraph('GBIME')
+2026-03-26 11:27:38 | INFO | HTTP Request: GET https://www.nepalstock.com/api/authenticate/prove "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO | HTTP Request: GET https://www.nepalstock.com/api/nots/security?nonDelisted=true "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO | HTTP Request: GET https://www.nepalstock.com/api/nots/nepse-data/market-open "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO | HTTP Request: POST https://www.nepalstock.com/api/nots/market/graphdata/daily/341 "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO |   → list with 26 items in 0.32s
+2026-03-26 11:27:38 | INFO |   → field names: ['contractQuantity', 'contractRate', 'time']
+2026-03-26 11:27:38 | INFO |   → first row:
+{
+    "contractQuantity": null,
+    "contractRate": 247.6,
+    "time": 1774501260
+}
+2026-03-26 11:27:38 | INFO | GBIME: 26 rows total
+2026-03-26 11:27:38 | WARNING | GBIME: only 26 rows — date range selectors must be capped to 26 days max. Update the plan before Day 2.
+2026-03-26 11:27:38 | WARNING | GBIME: no recognised date field in first row. Available keys: ['contractQuantity', 'contractRate', 'time']
+2026-03-26 11:27:38 | INFO | ============================================================
+2026-03-26 11:27:38 | INFO | Calling: getDailyNepseIndexGraph()
+2026-03-26 11:27:38 | INFO | HTTP Request: POST https://www.nepalstock.com/api/nots/graph/index/58 "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO |   → list with 66 items in 0.02s
+2026-03-26 11:27:38 | ERROR |   → FAILED after 0.02s
+Traceback (most recent call last):
+  File "/home/munamadan/Desktop/nepse-dashboard/validate_api.py", line 38, in safe_call
+    logger.info(f"  → field names: {list(result[0].keys())}")
+                                         ^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'keys'
+2026-03-26 11:27:38 | WARNING | NEPSE_INDEX: no data — cannot check depth
+2026-03-26 11:27:38 | INFO | ============================================================
+2026-03-26 11:27:38 | INFO | Calling: getLiveMarket()
+2026-03-26 11:27:38 | INFO | HTTP Request: GET https://www.nepalstock.com/api/nots/lives-market "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO |   → list with 291 items in 0.04s
+2026-03-26 11:27:38 | INFO |   → field names: ['securityId', 'securityName', 'symbol', 'indexId', 'openPrice', 'highPrice', 'lowPrice', 'totalTradeQuantity', 'totalTradeValue', 'lastTradedPrice', 'percentageChange', 'lastUpdatedDateTime', 'lastTradedVolume', 'previousClose', 'averageTradedPrice']
+2026-03-26 11:27:38 | INFO |   → first row:
+{
+    "securityId": "5982",
+    "securityName": "Sanima Reliance Life Insurance Limited",
+    "symbol": "SRLI",
+    "indexId": 58,
+    "openPrice": 417.0,
+    "highPrice": 417.7,
+    "lowPrice": 414.1,
+    "totalTradeQuantity": 7145,
+    "totalTradeValue": 2965163.0,
+    "lastTradedPrice": 415.1,
+    "percentageChange": -0.69,
+    "lastUpdatedDateTime": "2026-03-26 11:27:07.671554",
+    "lastTradedVolume": 68,
+    "previousClose": 418.0,
+    "averageTradedPrice": 415.0
+}
+2026-03-26 11:27:38 | INFO | Live market: 291 stocks
+2026-03-26 11:27:38 | INFO | GBIME live row:
+{
+    "securityId": "341",
+    "securityName": "Global IME Bank Limited",
+    "symbol": "GBIME",
+    "indexId": 58,
+    "openPrice": 247.6,
+    "highPrice": 256.0,
+    "lowPrice": 247.6,
+    "totalTradeQuantity": 45306,
+    "totalTradeValue": 11438846.9,
+    "lastTradedPrice": 252.0,
+    "percentageChange": -0.24,
+    "lastUpdatedDateTime": "2026-03-26 11:26:53.432415",
+    "lastTradedVolume": 10,
+    "previousClose": 252.6,
+    "averageTradedPrice": 252.48
+}
+2026-03-26 11:27:38 | INFO | ============================================================
+2026-03-26 11:27:38 | INFO | Calling: getNepseSubIndices()
+2026-03-26 11:27:38 | INFO | HTTP Request: GET https://www.nepalstock.com/api/nots "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO |   → list with 13 items in 0.02s
+2026-03-26 11:27:38 | INFO |   → field names: ['id', 'index', 'change', 'perChange', 'currentValue']
+2026-03-26 11:27:38 | INFO |   → first row:
+{
+    "id": 55,
+    "index": "Development Bank Index",
+    "change": -29.44,
+    "perChange": -0.46,
+    "currentValue": 6344.08
+}
+2026-03-26 11:27:38 | INFO | CONFIRMED: getNepseSubIndices() is current-only. Cannot use for historical line.
+2026-03-26 11:27:38 | INFO | ============================================================
+2026-03-26 11:27:38 | INFO | Calling: getCompanyList()
+2026-03-26 11:27:38 | INFO | HTTP Request: GET https://www.nepalstock.com/api/nots/company/list "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO |   → list with 622 items in 0.03s
+2026-03-26 11:27:38 | INFO |   → field names: ['id', 'companyName', 'symbol', 'securityName', 'status', 'companyEmail', 'website', 'sectorName', 'regulatoryBody', 'instrumentType']
+2026-03-26 11:27:38 | INFO |   → first row:
+{
+    "id": 131,
+    "companyName": "Nabil Bank Limited",
+    "symbol": "NABIL",
+    "securityName": "Nabil Bank Limited",
+    "status": "A",
+    "companyEmail": "company.affairs@nabilbank.com",
+    "website": "www.nabilbank.com",
+    "sectorName": "Commercial Banks",
+    "regulatoryBody": "Nepal Rastra Bank",
+    "instrumentType": "Equity"
+}
+2026-03-26 11:27:38 | INFO | Sector field name confirmed: 'sectorName'
+2026-03-26 11:27:38 | INFO | Distinct sector values (13):
+2026-03-26 11:27:38 | INFO |   · Commercial Banks (144 stocks)
+2026-03-26 11:27:38 | INFO |   · Development Banks (107 stocks)
+2026-03-26 11:27:38 | INFO |   · Finance (80 stocks)
+2026-03-26 11:27:38 | INFO |   · Hotels And Tourism (10 stocks)
+2026-03-26 11:27:38 | INFO |   · Hydro Power (102 stocks)
+2026-03-26 11:27:38 | INFO |   · Investment (9 stocks)
+2026-03-26 11:27:38 | INFO |   · Life Insurance (21 stocks)
+2026-03-26 11:27:38 | INFO |   · Manufacturing And Processing (30 stocks)
+2026-03-26 11:27:38 | INFO |   · Microfinance (71 stocks)
+2026-03-26 11:27:38 | INFO |   · Mutual Fund (13 stocks)
+2026-03-26 11:27:38 | INFO |   · Non Life Insurance (19 stocks)
+2026-03-26 11:27:38 | INFO |   · Others (11 stocks)
+2026-03-26 11:27:38 | INFO |   · Tradings (5 stocks)
+2026-03-26 11:27:38 | INFO | GBIME confirmed in company list.
+2026-03-26 11:27:38 | INFO | ============================================================
+2026-03-26 11:27:38 | INFO | Calling: getTopGainers()
+2026-03-26 11:27:38 | INFO | HTTP Request: GET https://www.nepalstock.com/api/nots/top-ten/top-gainer "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO |   → list with 91 items in 0.02s
+2026-03-26 11:27:38 | INFO |   → field names: ['symbol', 'ltp', 'cp', 'pointChange', 'percentageChange', 'securityName', 'securityId']
+2026-03-26 11:27:38 | INFO |   → first row:
+{
+    "symbol": "RSML",
+    "ltp": 2013.1,
+    "cp": 0.0,
+    "pointChange": 183.0,
+    "percentageChange": 10.0,
+    "securityName": "Reliance Spinning Mills Limited",
+    "securityId": 9306
+}
+2026-03-26 11:27:38 | INFO | ============================================================
+2026-03-26 11:27:38 | INFO | Calling: getTopLosers()
+2026-03-26 11:27:38 | INFO | HTTP Request: GET https://www.nepalstock.com/api/nots/top-ten/top-loser "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO |   → list with 176 items in 0.02s
+2026-03-26 11:27:38 | INFO |   → field names: ['symbol', 'ltp', 'cp', 'pointChange', 'percentageChange', 'securityName', 'securityId']
+2026-03-26 11:27:38 | INFO |   → first row:
+{
+    "symbol": "PMHPL",
+    "ltp": 390.0,
+    "cp": 0.0,
+    "pointChange": -38.0,
+    "percentageChange": -8.88,
+    "securityName": "Panchakanya Mai Hydropower Ltd",
+    "securityId": 2786
+}
+2026-03-26 11:27:38 | INFO | ============================================================
+2026-03-26 11:27:38 | INFO | Calling: isNepseOpen()
+2026-03-26 11:27:38 | INFO | HTTP Request: GET https://www.nepalstock.com/api/nots/nepse-data/market-open "HTTP/2 200 OK"
+2026-03-26 11:27:38 | INFO |   → dict keys: ['isOpen', 'asOf', 'id'] in 0.02s
+2026-03-26 11:27:38 | INFO |   → full response:
+{
+    "isOpen": "OPEN",
+    "asOf": "2026-03-26T11:26:17.595248",
+    "id": 80
+}
+2026-03-26 11:27:38 | INFO | ============================================================
+2026-03-26 11:27:38 | INFO | Validation complete.
+2026-03-26 11:27:38 | INFO | Full output: /home/munamadan/Desktop/nepse-dashboard/validate_api_output.txt
+2026-03-26 11:27:38 | INFO | Before Day 2, check:
+2026-03-26 11:27:38 | INFO |   1. All field names — they define transforms.py variable names
+2026-03-26 11:27:38 | INFO |   2. Historical depth — if <90 days, cap date range selectors
+2026-03-26 11:27:38 | INFO |   3. sectorName values — must match the sector mapping in the plan
