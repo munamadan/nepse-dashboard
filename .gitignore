@@ -10,3 +10,5 @@ __pycache__/
 *.log
 /tmp/
 *.sh
+inspect_api.py
+inspect_api_output.txt

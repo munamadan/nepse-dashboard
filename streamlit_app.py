@@ -2,13 +2,16 @@
 Day 1 smoke test — validates pywasm + API on Streamlit Cloud.
 Replace this file with the real app on Day 5.
 """
+
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent))
 
-import os
 import inspect
+import os
 import traceback
+
 import streamlit as st
 
 st.set_page_config(page_title="NEPSE — Day 1 Smoke Test", page_icon="📈")
@@ -19,6 +22,7 @@ st.caption("Temporary validation page. All checks must be green before Day 2.")
 st.subheader("1. pywasm import + .wasm file")
 try:
     import pywasm
+
     lib_path = os.path.dirname(inspect.getfile(pywasm))
     all_files = os.listdir(lib_path)
     wasm_files = [f for f in all_files if f.endswith(".wasm")]
@@ -49,6 +53,7 @@ except Exception as e:
 st.subheader("2. NepseUnofficialApi import")
 try:
     from nepse import Nepse
+
     st.success("✓ from nepse import Nepse — OK")
 except ImportError as e:
     st.error(
@@ -61,7 +66,9 @@ except ImportError as e:
 # ── 3. Client init ───────────────────────────────────────────────────────────
 st.subheader("3. Nepse() client init (loads WebAssembly)")
 try:
-    with st.spinner("Initialising Nepse client — loads .wasm binary, takes ~5 seconds..."):
+    with st.spinner(
+        "Initialising Nepse client — loads .wasm binary, takes ~5 seconds..."
+    ):
         nepse = Nepse()
         nepse.setTLSVerification(False)
     st.success("✓ Nepse() initialised. TLS verification disabled (expected for NEPSE).")
