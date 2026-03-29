@@ -104,7 +104,7 @@ def render_gainers_losers(n: int = 5) -> None:
             st.warning("Losers data unavailable.")
 
     if top_gainers and top_losers:
-        fig = build_gainers_losers_chart(top_gainers, top_losers)
+        fig = build_gainers_losers_chart(pd.DataFrame(top_gainers), pd.DataFrame(top_losers))
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
     else:
         logger.warning("render_gainers_losers: missing gainers or losers, skipping chart")
