@@ -152,7 +152,9 @@ if comparison_symbols:
     if len(series_map) < 2:
         st.warning("Not enough data to compare. Try different stocks or a longer date range.")
     else:
-        aligned = align_multiple_stocks(series_map, days)
+        aligned = align_multiple_stocks(series_map)
+        if not aligned.empty:
+            aligned = slice_to_days(aligned, days)
         if aligned.empty:
             st.warning("Could not align stocks over the selected period. Try a longer date range.")
         else:
