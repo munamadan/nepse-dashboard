@@ -156,7 +156,7 @@ if comparison_symbols:
         aligned = align_multiple_stocks(series_map)
         if not aligned.empty:
             aligned = slice_to_days(aligned, days)
-            aligned = aligned.apply(normalize_to_index)
+            aligned = aligned.apply(lambda s: (s / s.iloc[0]) * 100)
         if aligned.empty:
             st.warning("Could not align stocks over the selected period. Try a longer date range.")
         else:
