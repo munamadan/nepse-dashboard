@@ -8,6 +8,7 @@ from streamlit_autorefresh import st_autorefresh
 
 from src.data.cache import get_historical_prices, get_company_list
 from src.processing.transforms import (
+    normalize_to_index,
     build_clean_series,
     slice_to_days,
     detect_corporate_actions,
@@ -155,6 +156,7 @@ if comparison_symbols:
         aligned = align_multiple_stocks(series_map)
         if not aligned.empty:
             aligned = slice_to_days(aligned, days)
+            aligned = aligned.apply(normalize_to_index)
         if aligned.empty:
             st.warning("Could not align stocks over the selected period. Try a longer date range.")
         else:
