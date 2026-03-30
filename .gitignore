@@ -12,3 +12,5 @@ __pycache__/
 *.sh
 inspect_api.py
 inspect_api_output.txt
+CHANGELOG.md
+MASTERPROMPT.md
