@@ -1,22 +1,24 @@
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent))
 
 import logging
+
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 
-from src.data.cache import get_historical_prices, get_company_list
+from src.data.cache import get_company_list, get_historical_prices
 from src.processing.transforms import (
-    normalize_to_index,
-    build_clean_series,
-    slice_to_days,
-    detect_corporate_actions,
     align_multiple_stocks,
+    build_clean_series,
+    detect_corporate_actions,
+    normalize_to_index,
+    slice_to_days,
 )
-from src.ui.charts import build_price_chart, build_comparison_chart
-from src.ui.panels import render_live_panel, render_gainers_losers
+from src.ui.charts import build_comparison_chart, build_price_chart
 from src.ui.export import build_excel_export
+from src.ui.panels import render_gainers_losers, render_live_panel
 
 logging.basicConfig(
     level=logging.INFO,
@@ -87,14 +89,17 @@ with st.sidebar:
     st.session_state.date_range_days = date_range_days
 
     other_symbols = [s for s in all_symbols if s != symbol]
-    valid_defaults = [s for s in st.session_state.comparison_symbols if s in other_symbols]
+    if "comparison_symbols" not in st.session_state:
+        st.session_state.comparison_symbols = []
+    st.session_state.comparison_symbols = [
+        s for s in st.session_state.comparison_symbols if s in other_symbols
+    ]
     comparison_symbols: list[str] = st.multiselect(
         "Compare With (up to 8)",
         options=other_symbols,
-        default=valid_defaults,
+        key="comparison_symbols",
         max_selections=8,
     )
-    st.session_state.comparison_symbols = comparison_symbols
 
     st.divider()
     st.caption("Source: nepalstock.com · Unofficial API")
