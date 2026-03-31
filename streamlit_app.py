@@ -153,13 +153,13 @@ else:
     if sector_proxy_full.empty:
         st.warning(f"Sector proxy unavailable for {sector_name}.")
     else:
-        start_date: pd.Timestamp = df["date"].iloc[0]
+        start_date: pd.Timestamp = df.index[0]
         sector_sliced = sector_proxy_full[sector_proxy_full.index >= start_date]
 
         if sector_sliced.empty:
             st.warning("Not enough sector data for the selected date range.")
         else:
-            stock_close = df.set_index("date")["close"]
+            stock_close = df["close"]
             stock_series = (stock_close / stock_close.iloc[0]) * 100
             sector_series = (sector_sliced / sector_sliced.iloc[0]) * 100
 
@@ -181,7 +181,7 @@ if comparison_symbols:
             raw_sym = get_historical_prices(sym)
             df_sym = build_clean_series(raw_sym, sym)
             if not df_sym.empty:
-                series_map[sym] = df_sym.set_index("date")["close"]
+                series_map[sym] = df_sym["close"]
             else:
                 logger.warning(f"Comparison: empty series for {sym}, skipping")
 

@@ -89,7 +89,7 @@ def get_sector_proxy(sector_name: str) -> pd.Series:
         if df.empty:
             logger.warning(f"get_sector_proxy: empty clean series for {sym}, skipping")
             continue
-        close = df.set_index("date")["close"]
+        close = df["close"]
         if close.iloc[0] == 0:
             logger.warning(f"get_sector_proxy: zero first price for {sym}, skipping")
             continue
