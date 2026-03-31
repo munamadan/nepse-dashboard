@@ -2,15 +2,15 @@ import logging
 import threading
 
 import streamlit as st
-from NepseUnofficialApi import Nepse
+from nepse import Nepse
 
 from src.data.snapshot import (
     load_snapshot,
-    get_snapshot_live_market,
-    get_snapshot_company_list,
-    get_snapshot_gainers,
-    get_snapshot_losers,
-    get_snapshot_market_status,
+    load_snapshot_live_market,
+    load_snapshot_company_list,
+    load_snapshot_gainers,
+    load_snapshot_losers,
+    load_snapshot_market_status,
 )
 
 logger = logging.getLogger(__name__)
@@ -60,7 +60,7 @@ def fetch_live_market() -> list[dict]:
     except Exception:
         logger.error("getLiveMarket() failed", exc_info=True)
         _snapshot_fallback_triggered = True
-        return get_snapshot_live_market()
+        return load_snapshot_live_market()
 
 
 def fetch_company_list() -> list[dict]:
@@ -77,7 +77,7 @@ def fetch_company_list() -> list[dict]:
     except Exception:
         logger.error("getCompanyList() failed", exc_info=True)
         _snapshot_fallback_triggered = True
-        return get_snapshot_company_list()
+        return load_snapshot_company_list()
 
 
 def fetch_gainers() -> list[dict]:
@@ -92,7 +92,7 @@ def fetch_gainers() -> list[dict]:
     except Exception:
         logger.error("getTopGainers() failed", exc_info=True)
         _snapshot_fallback_triggered = True
-        return get_snapshot_gainers()
+        return load_snapshot_gainers()
 
 
 def fetch_losers() -> list[dict]:
@@ -107,7 +107,7 @@ def fetch_losers() -> list[dict]:
     except Exception:
         logger.error("getTopLosers() failed", exc_info=True)
         _snapshot_fallback_triggered = True
-        return get_snapshot_losers()
+        return load_snapshot_losers()
 
 
 def fetch_market_status() -> dict:
@@ -121,4 +121,4 @@ def fetch_market_status() -> dict:
     except Exception:
         logger.error("isNepseOpen() failed", exc_info=True)
         _snapshot_fallback_triggered = True
-        return get_snapshot_market_status()
+        return load_snapshot_market_status()
