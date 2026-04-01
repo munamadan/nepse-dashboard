@@ -51,7 +51,6 @@ def section(title: str) -> None:
 def main() -> None:
     client = make_client()
 
-    # ── 1. Basic pipeline: GBIME ──────────────────────────────────────────────
     section("1. build_clean_series(GBIME)")
     raw = fetch_raw(client, "GBIME")
     logger.info(f"Raw rows from API: {len(raw)}")
@@ -70,7 +69,6 @@ def main() -> None:
     logger.info(f"Tail:\n{df.tail(3)}")
     logger.info(f"Nulls:\n{df.isnull().sum()}")
 
-    # ── 2. normalize_to_index ─────────────────────────────────────────────────
     section("2. normalize_to_index")
     normed = normalize_to_index(df)
     logger.info(f"First value (must be exactly 100.0): {normed.iloc[0]}")
@@ -78,28 +76,24 @@ def main() -> None:
     assert normed.iloc[0] == 100.0, f"FAIL: first={normed.iloc[0]}, expected 100.0"
     logger.info("PASS: starts at exactly 100.0")
 
-    # ── 3. slice_to_days ─────────────────────────────────────────────────────
     section("3. slice_to_days(90)")
     sliced = slice_to_days(df, 90)
     normed_sliced = normalize_to_index(sliced)
     assert normed_sliced.iloc[0] == 100.0, "FAIL: sliced normalization broken"
     logger.info(f"PASS: {len(sliced)} rows, starts at 100.0")
 
-    # ── 4. detect_corporate_actions ───────────────────────────────────────────
     section("4. detect_corporate_actions")
     suspicious = detect_corporate_actions(df)
     logger.info(f"Potential corporate action dates: {len(suspicious)}")
     if not suspicious.empty:
         logger.info(f"\n{suspicious}")
 
-    # ── 5. compute_summary_stats ──────────────────────────────────────────────
     section("5. compute_summary_stats")
     zero_vol = sum(1 for r in raw if (r.get("totalTradedQuantity") or 0) == 0)
     stats = compute_summary_stats(sliced, zero_volume_days=zero_vol)
     for k, v in stats.items():
         logger.info(f"  {k}: {v}")
 
-    # ── 6. align_multiple_stocks ──────────────────────────────────────────────
     section("6. align_multiple_stocks(GBIME, NABIL)")
     raw_nabil = fetch_raw(client, "NABIL")
     df_nabil = build_clean_series(raw_nabil, "NABIL")
@@ -110,7 +104,6 @@ def main() -> None:
     logger.info(f"Aligned shape: {aligned.shape}")
     logger.info(f"GBIME first: {aligned['GBIME'].iloc[0]:.4f}, NABIL first: {aligned['NABIL'].iloc[0]:.4f}")
 
-    # ── 7. Sector proxy timing (top 5 Commercial Banks) ───────────────────────
     section("7. Sector proxy timing — top 5 Commercial Banks")
     live = client.getLiveMarket()
     companies = client.getCompanyList()
@@ -147,7 +140,6 @@ def main() -> None:
         assert abs(proxy.iloc[0] - 100.0) < 0.01, "FAIL: sector proxy not starting at 100"
         logger.info("PASS: sector proxy starts at 100.0")
 
-    # ── Summary ───────────────────────────────────────────────────────────────
     section("ALL CHECKS PASSED")
     logger.info("Pipeline is working. Output saved to test_pipeline_output.txt")
     logger.info(
