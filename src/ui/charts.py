@@ -14,7 +14,7 @@ _LAYOUT_DEFAULTS = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(family="Inter, system-ui, sans-serif", size=13),
-    margin=dict(l=10, r=10, t=40, b=10),
+    margin=dict(l=10, r=10, t=60, b=10),
     hovermode="x unified",
     legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
     xaxis=dict(showgrid=False, zeroline=False),
@@ -83,7 +83,10 @@ def build_price_chart(
 
     _apply_defaults(fig, f"{symbol} — Price History (High / Low / Close)")
     fig.update_yaxes(title_text="Price (NPR)")
-    logger.info(f"build_price_chart({symbol}): {len(df)} rows, {len(corporate_action_dates)} corp actions")
+    logger.info(
+        f"build_price_chart({symbol}): {len(df)} rows, "
+        f"{len(corporate_action_dates)} corp actions"
+    )
     return fig
 
 
@@ -155,7 +158,10 @@ def build_sector_chart(
 
     _apply_defaults(fig, f"{symbol} vs Sector Proxy (Indexed to 100)")
     fig.update_yaxes(title_text="Indexed Return (start = 100)")
-    logger.info(f"build_sector_chart({symbol}): stock={len(stock_series)} rows, sector={len(sector_series)} rows")
+    logger.info(
+        f"build_sector_chart({symbol}): stock={len(stock_series)} rows, "
+        f"sector={len(sector_series)} rows"
+    )
     return fig
 
 
@@ -198,10 +204,15 @@ def build_gainers_losers_chart(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         font=dict(family="Inter, system-ui, sans-serif", size=13),
-        margin=dict(l=10, r=10, t=40, b=10),
+        margin=dict(l=10, r=10, t=60, b=10),
         hovermode="y",
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-        xaxis=dict(title_text="% Change", showgrid=True, gridcolor="rgba(128,128,128,0.15)", zeroline=True),
+        xaxis=dict(
+            title_text="% Change",
+            showgrid=True,
+            gridcolor="rgba(128,128,128,0.15)",
+            zeroline=True,
+        ),
         yaxis=dict(showgrid=False, autorange="reversed"),
         barmode="overlay",
     )
