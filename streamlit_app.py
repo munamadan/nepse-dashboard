@@ -38,7 +38,6 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# ── Page config must be first Streamlit call ──────────────────────────────────
 st.set_page_config(
     page_title="NEPSE Dashboard",
     page_icon="📈",
@@ -47,7 +46,6 @@ st.set_page_config(
 
 st_autorefresh(interval=300_000, key="live_refresh")
 
-# ── Session state init ────────────────────────────────────────────────────────
 if "selected_symbol" not in st.session_state:
     st.session_state.selected_symbol = "GBIME"
 if "comparison_symbols" not in st.session_state:
@@ -57,15 +55,13 @@ if "date_range_days" not in st.session_state:
 if "initialized" not in st.session_state:
     st.session_state.initialized = True
 
-# ── Snapshot fallback banner ──────────────────────────────────────────────────
 if was_snapshot_used():
     snap_dt = snapshot_date()
     st.info(
-        f"⚠️ Live data unavailable — showing snapshot from {snap_dt}. "
+        f"Live data unavailable — showing snapshot from {snap_dt}. "
         "Refresh to reconnect."
     )
 
-# ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.title("NEPSE Dashboard")
     st.caption("Nepal Stock Exchange · Live Data")
@@ -94,6 +90,10 @@ with st.sidebar:
         key="selected_symbol",
     )
 
+    sector_label = get_sector_for_symbol(st.session_state.selected_symbol)
+    if sector_label:
+        st.caption(f"Sector: {sector_label}")
+
     st.radio(
         "Date Range",
         options=[30, 60, 90, 180],
@@ -113,14 +113,12 @@ with st.sidebar:
     st.divider()
     st.caption("Data: NepseUnofficialApi · Refreshes every 5 min")
 
-# ── Resolved values ───────────────────────────────────────────────────────────
 symbol: str = st.session_state.selected_symbol
 date_range_days: int = st.session_state.date_range_days
 comparison_symbols: list[str] = st.session_state.comparison_symbols
 
 st.title(f"📈 {symbol} — NEPSE Stock Analysis")
 
-# ── Price History Chart ───────────────────────────────────────────────────────
 st.subheader("Price History")
 
 with st.spinner(f"Loading {symbol} price data..."):
@@ -137,7 +135,8 @@ corp_dates = detect_corporate_actions(df)
 fig_price = build_price_chart(df, symbol, corp_dates)
 st.plotly_chart(fig_price, use_container_width=True)
 
-# ── Sector Proxy Chart ────────────────────────────────────────────────────────
+st.divider()
+
 st.subheader(f"{symbol} vs Sector Proxy")
 
 sector_name = get_sector_for_symbol(symbol)
@@ -170,7 +169,8 @@ else:
         f"Sector: {sector_name} · Equal-weighted mean of top 15 stocks by volume"
     )
 
-# ── Multi-Stock Comparison Chart ──────────────────────────────────────────────
+st.divider()
+
 if comparison_symbols:
     st.subheader("Multi-Stock Comparison")
 
@@ -203,7 +203,8 @@ if comparison_symbols:
                 fig_comp = build_comparison_chart(normalized)
                 st.plotly_chart(fig_comp, use_container_width=True)
 
-# ── Excel Export ──────────────────────────────────────────────────────────────
+    st.divider()
+
 st.subheader("Export Data")
 
 col_btn, col_dl = st.columns([1, 3])
@@ -223,7 +224,7 @@ if (
 ):
     with col_dl:
         st.download_button(
-            label=f"⬇️ Download {symbol}_{date_range_days}d.xlsx",
+            label=f"Download {symbol}_{date_range_days}d.xlsx",
             data=st.session_state.export_bytes,
             file_name=f"{symbol}_{date_range_days}d.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -231,7 +232,6 @@ if (
 
 st.divider()
 
-# ── Live Market Panel + Gainers/Losers ────────────────────────────────────────
 render_live_panel(symbol)
 st.divider()
 render_gainers_losers()
