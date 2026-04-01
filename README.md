@@ -1,8 +1,8 @@
 # NEPSE Stock Analysis Dashboard
 
-A web-based dashboard for analyzing stocks listed on the Nepal Stock Exchange (NEPSE). Built as a portfolio project to demonstrate data engineering and financial analysis skills.
+A web-based dashboard for analyzing stocks listed on the Nepal Stock Exchange (NEPSE).
 
-Live app: https://nepse-dashboard.streamlit.app
+Live app: https://nepse-dash-board.streamlit.app
 
 ---
 
